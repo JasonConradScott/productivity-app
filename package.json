@@ -1,0 +1,15 @@
+{
+  "name": "productivity-app",
+  "version": "1.0.0",
+  "description": "Productivity app with shared SQL Server analysis and validation tools",
+  "main": "lib/db-client.js",
+  "scripts": {
+    "test-db": "node scripts/test-connection.js"
+  },
+  "keywords": ["sql-server", "productivity", "validation", "schema"],
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "mssql": "^10.0.1"
+  }
+}
