@@ -1,0 +1,18 @@
+---
+description: Productivity app development standards (Windows, MS SQL Server)
+alwaysApply: true
+---
+
+# Productivity App Standards
+
+**Platform:** Windows only, MS SQL Server only. No PostgreSQL, Linux, or macOS.
+
+**Database as source of truth:** When checking three-layer alignment (frontend ↔ API ↔ DB), always check the database directly (e.g. `lib/db-client.js` or system queries), not documentation. If something is out of alignment with the DB, change the other layer—not the database.
+
+**Before DB-related changes:** Verify table and procedure structure from the live database first. Run `npm run validate` at session start and before commits when a validator is available.
+
+**SQL scripts:** Make scripts safe to run multiple times (use `IF OBJECT_ID(...) IS NULL` before CREATE, check existence before DROP). Temporary one-off scripts: delete after successful run; versioned migration scripts: keep in the repo.
+
+**Code reuse:** Encouraged. Use shared modules (e.g. `lib/db-client.js`) to keep the codebase DRY.
+
+**Full rules:** See **RULES.md** in the project root for all development rules (stored procedures, endpoint validation, script safety, terminal usage on Windows, etc.).

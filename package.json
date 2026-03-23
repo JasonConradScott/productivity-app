@@ -4,7 +4,10 @@
   "description": "Productivity app with shared SQL Server analysis and validation tools",
   "main": "lib/db-client.js",
   "scripts": {
-    "test-db": "node scripts/test-connection.js"
+    "test-db": "node scripts/test-connection.js",
+    "validate": "node scripts/unified-validator.js",
+    "validate-schema": "node scripts/validate-schema.js",
+    "run-script": "node scripts/run-sql-script.js"
   },
   "keywords": ["sql-server", "productivity", "validation", "schema"],
   "license": "MIT",
