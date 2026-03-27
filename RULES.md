@@ -54,7 +54,19 @@ Keep naming and types consistent across:
 
 ---
 
-## 5. Pre-development database analysis (database-first order)
+## 5. Text column defaults (VARCHAR vs NVARCHAR)
+
+**Default for new tables and columns:** use **`VARCHAR`** for character data unless the requirement **explicitly** calls for **`NVARCHAR`** (Unicode).
+
+- Use **`NVARCHAR`** when the column must reliably store **full Unicode** (emoji, non-Latin scripts, or user content where encoding cannot be restricted).
+- When you choose **`NVARCHAR`**, state that in the migration script or design note so it is clear the exception was **intentional**.
+- Existing objects are not changed retroactively without a deliberate migration.
+
+This project bias favors predictable storage and typical English/ASCII productivity text; widen to Unicode where product or integration needs it.
+
+---
+
+## 6. Pre-development database analysis (database-first order)
 
 - Database objects must be created and verified **before** dependent code (API or UI).
 - Order of operations: (1) Database – tables and procedures verified or created and tested; (2) API – endpoints only after DB is verified; (3) UI – only after API is verified.
@@ -62,7 +74,7 @@ Keep naming and types consistent across:
 
 ---
 
-## 6. Stored procedure retrieval and usage
+## 7. Stored procedure retrieval and usage
 
 - Prefer Node scripts (or this project’s tools) to retrieve procedure definitions so output is not truncated.
 - Use `sys.sql_modules` or `OBJECT_DEFINITION(OBJECT_ID('name'))` for full definitions; avoid relying on truncated console output.
@@ -71,7 +83,7 @@ Keep naming and types consistent across:
 
 ---
 
-## 7. SQL script safety
+## 8. SQL script safety
 
 All SQL scripts must be written so they can be run multiple times safely without errors. The goal is **idempotency where possible**: running the script once or ten times should leave the database in the same consistent state. That way deployments, migrations, and ad‑hoc runs don’t depend on “has this already been run?” and won’t break if someone runs the script again.
 
@@ -119,7 +131,7 @@ All SQL scripts must be written so they can be run multiple times safely without
 
 ---
 
-## 8. Endpoint–procedure validation
+## 9. Endpoint–procedure validation
 
 Before implementing an endpoint that calls a stored procedure:
 
@@ -129,7 +141,7 @@ Before implementing an endpoint that calls a stored procedure:
 
 ---
 
-## 9. API endpoint separation and data minimization
+## 10. API endpoint separation and data minimization
 
 - Each endpoint should have a single, well-defined purpose.
 - Return only the data needed for that use case; use separate endpoints for different data needs (e.g. list vs full details).
@@ -137,7 +149,7 @@ Before implementing an endpoint that calls a stored procedure:
 
 ---
 
-## 10. Security
+## 11. Security
 
 - Authentication: login status, session handling, and user/role display as appropriate.
 - Authorization: role-based access where needed; secure API endpoints; proper logout.
@@ -145,13 +157,13 @@ Before implementing an endpoint that calls a stored procedure:
 
 ---
 
-## 11. Case sensitivity (SQL Server and JavaScript)
+## 12. Case sensitivity (SQL Server and JavaScript)
 
 SQL Server column names are case-insensitive by default; JavaScript property access is case-sensitive. Use consistent casing in the database and match it in JavaScript (and API contracts). Document expected property names where it helps.
 
 ---
 
-## 12. Code style and error handling
+## 13. Code style and error handling
 
 - Clear separation of concerns; modular, maintainable code.
 - **Code reuse is encouraged.** Use shared modules and utilities (e.g. `lib/db-client.js`) where they keep the codebase DRY and maintainable. Do not avoid reuse in order to reduce coupling during normal development.
@@ -160,7 +172,7 @@ SQL Server column names are case-insensitive by default; JavaScript property acc
 
 ---
 
-## 13. Rule management
+## 14. Rule management
 
 When adding or changing rules:
 
@@ -171,13 +183,13 @@ When adding or changing rules:
 
 ---
 
-## 14. Project context
+## 15. Project context
 
 This project is a productivity app with shared SQL Server analysis and validation tools. It may be used with or without a web frontend. The stack is Node.js and MS SQL Server on Windows; schema discovery and validation go through `lib/db-client.js` and project scripts.
 
 ---
 
-## 15. Terminal usage on Windows (PowerShell)
+## 16. Terminal usage on Windows (PowerShell)
 
 Development and tooling run on Windows; the default shell is PowerShell. To avoid session freezes, buffer overflows, and parser errors when using the terminal (e.g. in Cursor):
 
