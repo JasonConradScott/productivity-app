@@ -1,6 +1,6 @@
 /*
   Migration: Inbox (Capture) tables — dbo.InboxItem, dbo.InboxAttachment.
-  Product: quick notes (Body VARCHAR(MAX)); Status for triage lifecycle; attachments without sort order.
+  Product: quick notes (Body VARCHAR(MAX)); StatusId for triage lifecycle; attachments without sort order.
   Safe to run multiple times (idempotent). See RULES.md §8 (SQL script safety).
 */
 SET NOCOUNT ON;
@@ -10,9 +10,9 @@ BEGIN
   CREATE TABLE dbo.InboxItem (
     InboxItemId BIGINT IDENTITY(1,1) NOT NULL,
     Body VARCHAR(MAX) NOT NULL,
-    Status TINYINT NOT NULL CONSTRAINT DF_InboxItem_Status DEFAULT (1),
+    StatusId TINYINT NOT NULL CONSTRAINT DF_InboxItem_StatusId DEFAULT (1),
     CONSTRAINT PK_InboxItem PRIMARY KEY (InboxItemId),
-    CONSTRAINT CK_InboxItem_Status CHECK (Status IN (1, 2, 3))
+    CONSTRAINT CK_InboxItem_Status CHECK (StatusId IN (1, 2, 3))
   );
 END
 GO
@@ -20,9 +20,9 @@ GO
 IF OBJECT_ID(N'dbo.InboxItem', N'U') IS NOT NULL
   AND NOT EXISTS (
     SELECT 1 FROM sys.indexes
-    WHERE name = N'IX_InboxItem_Status' AND object_id = OBJECT_ID(N'dbo.InboxItem')
+    WHERE name = N'IX_InboxItem_StatusId' AND object_id = OBJECT_ID(N'dbo.InboxItem')
   )
-  CREATE INDEX IX_InboxItem_Status ON dbo.InboxItem (Status);
+  CREATE INDEX IX_InboxItem_StatusId ON dbo.InboxItem (StatusId);
 GO
 
 IF OBJECT_ID(N'dbo.InboxAttachment', N'U') IS NULL

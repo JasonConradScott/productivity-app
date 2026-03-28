@@ -20,6 +20,15 @@
 
 Use these **preferred** forms in new writing and code (identifiers may use `snake_case` or `PascalCase` as your stack requires, but **meaning** should match).
 
+### Database table names (SQL Server)
+
+| Pattern | Suffix | Example | Use when |
+|--------|--------|---------|----------|
+| **Lookup / code table** | **`_lkp`** | `dbo.Status_lkp`, `dbo.FocusLevel_lkp` | Small reference data (allowed codes, labels, meanings). |
+| **Junction (many-to-many)** | **`_link`** | `dbo.TaskNeed_link` | Only stores the association between two entities (composite PK, FKs to both sides). |
+
+General-purpose tags or other entities keep their own names; do **not** overload `_lkp` for those. See [RULES.md](../RULES.md) §8 (SQL script safety) for the same rule in engineering context.
+
 | Preferred term | Also acceptable | Avoid / clarify |
 |----------------|-----------------|-----------------|
 | **Horizon ladder** | — | “Goal tree” alone (ladder is time-scoped); “nested lists” (ambiguous). |

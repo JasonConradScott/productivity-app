@@ -1,5 +1,5 @@
 /*
-  Migration: Inbox item triage status lookup — dbo.InboxItemTriageStatus + FK from dbo.InboxItem.Status.
+  Migration: Inbox item triage status lookup — dbo.InboxItemTriageStatus + FK from dbo.InboxItem.StatusId.
   IDs: 1 Open, 2 Triaged, 3 Archived (matches prior CK_InboxItem_Status).
   Safe to run multiple times (idempotent). See RULES.md §8 (SQL script safety).
 */
@@ -47,6 +47,6 @@ BEGIN
       AND parent_object_id = OBJECT_ID(N'dbo.InboxItem')
   )
     ALTER TABLE dbo.InboxItem ADD CONSTRAINT FK_InboxItem_InboxItemTriageStatus
-      FOREIGN KEY (Status) REFERENCES dbo.InboxItemTriageStatus (InboxItemTriageStatusId);
+      FOREIGN KEY (StatusId) REFERENCES dbo.InboxItemTriageStatus (InboxItemTriageStatusId);
 END
 GO

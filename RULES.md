@@ -87,6 +87,13 @@ This project bias favors predictable storage and typical English/ASCII productiv
 
 All SQL scripts must be written so they can be run multiple times safely without errors. The goal is **idempotency where possible**: running the script once or ten times should leave the database in the same consistent state. That way deployments, migrations, and ad‑hoc runs don’t depend on “has this already been run?” and won’t break if someone runs the script again.
 
+### Table naming: lookup and junction tables
+
+- **Lookup / reference tables** (small code tables with `Label`/`Meaning` or similar): use the suffix **`_lkp`** on the table name (e.g. `dbo.Status_lkp`, `dbo.FocusLevel_lkp`, `dbo.TimeSensitivity_lkp`). Do not use the word `Lookup` as the table suffix; `_lkp` is the project convention.
+- **Junction tables** (many-to-many links between two entity tables): use the suffix **`_link`** on the table name (e.g. `dbo.TaskNeed_link`). Primary key and foreign keys should follow the same stem (e.g. `PK_TaskNeed_link`, `FK_TaskNeed_link_Task`).
+
+Canonical detail and examples also live in [docs/DEFINITIONS.md](./docs/DEFINITIONS.md) (naming).
+
 ### Why it matters
 
 - **Deployments and migrations** – Same script can be applied in dev, test, and prod without special “run once” logic.
